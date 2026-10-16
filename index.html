@@ -3,35 +3,263 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>sevenstreams-247 and bleepblorp-chat</title>
+<title>PNW Coast Off-Grid: live prediction-market trading with AI-built bots</title>
+<meta name="description" content="PNW Coast Off-Grid streams Kalshi 15-minute crypto and commodities markets 24/7, with trading recommendation bots built using AI coding tools. Home of sevenstreams-247 and bleepblorp-chat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root { color-scheme: dark; --bg: #070b08; --text: #e7f6ea; --muted: #b7cfc0; --accent: #39ff14; }
+:root {
+  color-scheme: dark;
+  --black: #050806;
+  --panel: #0c120e;
+  --line: #1d2b21;
+  --fog: #d9e3dc;
+  --moss: #9fb3a6;
+  --neon: #39ff14;
+  --gold: #d9ad45;
+  --bark: #8a4b34;
+}
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: "Segoe UI", system-ui, sans-serif; line-height: 1.6; }
-main { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
-h1 { font-size: 1.75rem; letter-spacing: -0.02em; margin: 0 0 0.75rem; }
-h2 { font-size: 1.05rem; color: var(--accent); margin: 1.5rem 0 0.4rem; }
-a { color: var(--accent); }
-nav ul { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; padding: 0; margin: 1.25rem 0; list-style: none; }
-.api { border: 1px solid #1c3a24; padding: 0.85rem 1rem; margin: 1.25rem 0; }
-.contact { color: var(--muted); }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--fog);
+  font-family: "Barlow", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+a { color: var(--neon); text-underline-offset: 3px; }
+a:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+h1, h2, h3 { font-family: "Oswald", sans-serif; font-weight: 500; line-height: 1.1; margin: 0; color: #fff; }
+.wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.25rem; }
+
+/* Header */
+.top { border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1rem; padding-bottom: 1rem; flex-wrap: wrap; }
+.brand { font-family: "Oswald", sans-serif; font-size: 1.15rem; color: #fff; text-decoration: none; letter-spacing: 0.01em; }
+.top nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+.top nav a { color: var(--moss); text-decoration: none; font-size: 0.95rem; }
+.top nav a:hover { color: var(--fog); }
+
+/* Hero */
+.hero { padding: 4.5rem 0 3.5rem; border-bottom: 1px solid var(--line); }
+.hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 3rem; align-items: end; }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 700; letter-spacing: -0.01em; }
+.hero p.lede { font-size: 1.25rem; color: var(--fog); max-width: 34rem; margin: 1.25rem 0 2rem; }
+.actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+.btn { display: inline-block; font-family: "Oswald", sans-serif; font-size: 1.05rem; padding: 0.7rem 1.4rem; border-radius: 3px; text-decoration: none; }
+.btn-live { background: var(--neon); color: var(--black); font-weight: 500; }
+.btn-live:hover { background: #6bff4f; }
+.btn-partner { border: 1px solid var(--gold); color: var(--gold); }
+.btn-partner:hover { background: rgba(217,173,69,0.1); }
+
+/* The market clock: the one bold element */
+.clock { border: 1px solid var(--line); background: var(--panel); padding: 1.5rem 1.6rem 1.4rem; border-radius: 4px; }
+.clock-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; color: var(--moss); font-size: 0.95rem; }
+.live-dot { color: var(--neon); }
+.live-dot::before { content: ""; display: inline-block; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--neon); margin-right: 0.45rem; box-shadow: 0 0 10px var(--neon); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .live-dot::before { animation: none; } }
+.clock-time { font-family: "Oswald", sans-serif; font-weight: 700; font-size: clamp(4rem, 11vw, 6.5rem); line-height: 1; color: var(--neon); text-shadow: 0 0 22px rgba(57,255,20,0.35); font-variant-numeric: tabular-nums; margin: 0.6rem 0 0.4rem; }
+.clock-sub { color: var(--fog); margin: 0; }
+.track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 1.1rem; }
+.track span { height: 6px; background: var(--line); border-radius: 1px; position: relative; overflow: hidden; }
+.track span i { position: absolute; inset: 0; width: 0; background: var(--neon); }
+.track span.done i { width: 100%; background: #1f6b13; }
+.clock-foot { display: flex; justify-content: space-between; color: var(--moss); font-size: 0.85rem; margin-top: 0.45rem; }
+.clock-note { color: var(--moss); font-size: 0.9rem; margin: 1rem 0 0; border-top: 1px solid var(--line); padding-top: 0.85rem; }
+
+/* Sections */
+section { padding: 4rem 0; border-bottom: 1px solid var(--line); }
+section h2 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); margin-bottom: 1.25rem; }
+.two { display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; }
+.prose p { margin: 0 0 1rem; max-width: 38rem; }
+.prose p:last-child { margin-bottom: 0; }
+
+/* Facts */
+.facts { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+.facts li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+.facts b { font-family: "Oswald", sans-serif; font-weight: 500; font-size: 1.35rem; color: #fff; line-height: 1.3; }
+.facts span { color: var(--moss); }
+
+/* Release timeline (a real sequence, ordered by date) */
+.timeline { list-style: none; padding: 0; margin: 2rem 0 0; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 0.45rem; top: 0.4rem; bottom: 0.4rem; width: 2px; background: var(--line); }
+.timeline li { position: relative; padding: 0 0 1.6rem 2.2rem; }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li::before { content: ""; position: absolute; left: 0; top: 0.35rem; width: 0.95rem; height: 0.95rem; border-radius: 50%; background: var(--black); border: 2px solid var(--moss); }
+.timeline li.now::before { border-color: var(--neon); background: var(--neon); box-shadow: 0 0 10px rgba(57,255,20,0.5); }
+.timeline li.gold::before { border-color: var(--gold); }
+.timeline .when { color: var(--moss); font-size: 0.95rem; }
+.timeline h3 { font-size: 1.4rem; margin: 0.1rem 0 0.3rem; }
+.timeline p { margin: 0; max-width: 40rem; }
+
+/* Partner section */
+.partner { background: linear-gradient(180deg, rgba(217,173,69,0.06), transparent 60%); }
+.fit { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem 2.5rem; margin: 2rem 0; }
+.fit h3 { font-size: 1.2rem; color: var(--gold); margin-bottom: 0.25rem; }
+.fit p { margin: 0; color: var(--fog); }
+.contact-line { font-size: 1.15rem; }
+.contact-line a { color: var(--gold); }
+
+/* Apps (required for Google API verification) */
+.apps h3 { font-size: 1.35rem; margin: 1.5rem 0 0.4rem; }
+.apps p { max-width: 42rem; margin: 0 0 1rem; }
+.api { border: 1px solid var(--line); background: var(--panel); padding: 1rem 1.15rem; margin-top: 1.5rem; max-width: 42rem; border-radius: 3px; }
+
+/* Footer */
+footer { padding: 2.5rem 0 3rem; color: var(--moss); font-size: 0.92rem; }
+footer .wrap { display: grid; gap: 1rem; }
+footer nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+footer p { margin: 0; max-width: 46rem; }
+
+@media (max-width: 820px) {
+  .hero { padding: 3rem 0 2.5rem; }
+  .hero-grid, .two, .fit { grid-template-columns: 1fr; gap: 2rem; }
+  .facts li { grid-template-columns: 7.5rem 1fr; }
+  section { padding: 3rem 0; }
+}
 </style>
 </head>
 <body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">PNW Coast Off-Grid</a>
+    <nav aria-label="Sections">
+      <a href="#channel">The channel</a>
+      <a href="#bots">The bots</a>
+      <a href="#partner">Partner with us</a>
+      <a href="#apps">Our apps</a>
+    </nav>
+  </div>
+</header>
+
 <main>
-<h1>sevenstreams-247</h1>
-<p>sevenstreams-247 is a private automation tool that manages live streams on the PNW Coast Off-Grid YouTube channel: creating daily live broadcasts, setting their titles, descriptions, privacy, and thumbnails, and scheduling ad breaks. It is used only by the channel owner.</p>
-<h2>bleepblorp-chat</h2>
-<p>bleepblorp-chat powers Bleep Blorp Bot (@bleepblorpbot), the AI chat assistant in PNW Coast Off-Grid's live chat. It reads live chat messages on the channel's streams and posts replies as the Bleep Blorp Bot channel. It is operated only by the channel owner.</p>
-<p class="api"><strong>Uses YouTube API Services.</strong> See the <a href="privacy.html">privacy policy</a> and the <a href="terms.html">terms of service</a>. By using these apps, users agree to be bound by the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>.</p>
-<nav>
-<ul>
-<li><a href="https://www.youtube.com/@PNWCoastOff-Grid">PNW Coast Off-Grid on YouTube</a></li>
-<li><a href="privacy.html">Privacy policy</a></li>
-<li><a href="terms.html">Terms of service</a></li>
-</ul>
-</nav>
-<p class="contact">Contact: <a href="mailto:pnwcoastoffgrid@gmail.com">pnwcoastoffgrid@gmail.com</a></p>
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Prediction markets, traded live around the clock.</h1>
+        <p class="lede">PNW Coast Off-Grid streams Kalshi's 15-minute crypto and commodities markets 24/7, with trading recommendation bots built from an off-grid homestead using AI coding tools.</p>
+        <div class="actions">
+          <a class="btn btn-live" href="https://www.youtube.com/@PNWCoastOff-Grid/live">Watch the live stream</a>
+          <a class="btn btn-partner" href="#partner">Partner with the channel</a>
+        </div>
+      </div>
+
+      <div class="clock" aria-live="off">
+        <div class="clock-head">
+          <span class="live-dot">Live 24/7</span>
+          <span id="window">This 15-minute market</span>
+        </div>
+        <p class="clock-time" id="clock">--:--</p>
+        <p class="clock-sub">until the next market opens. Every 15 minutes, all day, every day.</p>
+        <div class="track" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span></div>
+        <div class="clock-foot" aria-hidden="true"><span>:00</span><span>:15</span><span>:30</span><span>:45</span></div>
+        <p class="clock-note">The calls on stream come in the final 8 minutes of each market, with a voice alert.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="channel">
+    <div class="wrap two">
+      <div>
+        <h2>The channel</h2>
+        <div class="prose">
+          <p>PNW started the channel in July 2026 to trade prediction markets in the open and teach the strategy behind every call. Since October 1, 2026 the stream has run 24 hours a day from a dedicated server, with an AI chat assistant answering viewers' questions.</p>
+          <p>The focus is education: how the markets work, how the bots decide, and how to size and protect a trade. Viewers are never told which way to bet.</p>
+        </div>
+      </div>
+      <ul class="facts">
+        <li><b>Almost 2,000</b><span>subscribers, as of mid-October 2026</span></li>
+        <li><b>60+</b><span>paying channel members, most at the Strategist level</span></li>
+        <li><b>24/7</b><span>live since October 1, 2026, with a new broadcast every day</span></li>
+        <li><b>2 nights</b><span>a week of members' streams, Tuesdays and Thursdays, 5–8 PM Pacific</span></li>
+        <li><b>$20</b><span>starting balance of PNW's public challenge, running since August 24, 2026 and traded by his own live bots, with the bankroll shown on stream</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="bots">
+    <div class="wrap">
+      <h2>The bleepblorp bots</h2>
+      <div class="prose">
+        <p>Every bot is designed by PNW and built with AI coding tools. Members run the recommendation bots on their own computers and place their own trades. PNW's own trading bots, sevenstreams, trade only his account.</p>
+      </div>
+      <ol class="timeline">
+        <li><span class="when">With Day-Trader and Strategist members now</span><h3>bleepblorp crypto 0.1 and 0.2</h3><p>Recommendation bots for Kalshi's 15-minute crypto markets.</p></li>
+        <li class="now"><span class="when">On the live stream now</span><h3>bleepblorp crypto 0.3 and Bleep Blorp Bot</h3><p>crypto 0.3 makes the calls on screen. Bleep Blorp Bot, its chat-assistant sibling, welcomes viewers and explains what the bots are doing.</p></li>
+        <li class="gold"><span class="when">Strategist beta from October 20, 2026</span><h3>bleepblorp commodities 0.1</h3><p>Gold, silver, oil and more. It takes over the live stream whenever commodities markets are open.</p></li>
+        <li><span class="when">Strategist beta from November 22, 2026</span><h3>bleepblorp crypto 0.3 for members</h3><p>The bot viewers watch on stream, released to members.</p></li>
+        <li><span class="when">December 24, 2026</span><h3>bleepblorp weather 0.1</h3><p>The newest member of the family, for Kalshi's temperature markets.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="partner" class="partner">
+    <div class="wrap">
+      <h2>Partner with the channel</h2>
+      <div class="prose">
+        <p>The audience is traders and builders: people learning prediction markets, crypto and commodities, and people building their own bots with AI. The stream runs every hour of every day, so a partner's message reaches viewers in every time zone.</p>
+      </div>
+      <div class="fit">
+        <div><h3>Markets and exchanges</h3><p>Prediction markets, crypto and brokerage platforms that viewers already trade on.</p></div>
+        <div><h3>AI and coding tools</h3><p>Every bot on the channel is built with AI coding assistants, live and on camera.</p></div>
+        <div><h3>Hosting and data</h3><p>The 24/7 stream and the bots run on cloud servers fed by real-time market data.</p></div>
+        <div><h3>Off-grid living</h3><p>The whole operation runs from an off-grid homestead on satellite internet and solar power.</p></div>
+      </div>
+      <p class="contact-line">Email <a href="mailto:pnwcoastoffgrid@gmail.com?subject=Partnership%20with%20PNW%20Coast%20Off-Grid">pnwcoastoffgrid@gmail.com</a>. A media kit is available on request.</p>
+    </div>
+  </section>
+
+  <section id="apps" class="apps">
+    <div class="wrap">
+      <h2>Our apps</h2>
+      <h3>sevenstreams-247</h3>
+      <p>sevenstreams-247 is a private automation tool that manages live streams on the PNW Coast Off-Grid YouTube channel: creating daily live broadcasts, setting their titles, descriptions, privacy, and thumbnails, and scheduling ad breaks. It is used only by the channel owner.</p>
+      <h3>bleepblorp-chat</h3>
+      <p>bleepblorp-chat powers Bleep Blorp Bot (@bleepblorpbot), the AI chat assistant in PNW Coast Off-Grid's live chat. It reads live chat messages on the channel's streams and posts replies as the Bleep Blorp Bot channel. It is operated only by the channel owner.</p>
+      <p class="api"><strong>Uses YouTube API Services.</strong> See the <a href="privacy.html">privacy policy</a> and the <a href="terms.html">terms of service</a>. By using these apps, users agree to be bound by the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>.</p>
+    </div>
+  </section>
 </main>
+
+<footer>
+  <div class="wrap">
+    <nav aria-label="Site">
+      <a href="https://www.youtube.com/@PNWCoastOff-Grid">PNW Coast Off-Grid on YouTube</a>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html">Terms of service</a>
+      <a href="mailto:pnwcoastoffgrid@gmail.com">pnwcoastoffgrid@gmail.com</a>
+    </nav>
+    <p>Content on this channel is for education and entertainment, not financial advice. Trading prediction markets involves risk, including the loss of the money you trade. PNW Coast Off-Grid is not affiliated with or endorsed by Kalshi, Polymarket or YouTube.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var clock = document.getElementById("clock");
+  var bars = document.querySelectorAll(".track span");
+  function tick() {
+    var now = new Date();
+    var m = now.getMinutes(), s = now.getSeconds();
+    var into = (m % 15) * 60 + s;
+    var left = 900 - into;
+    var mm = Math.floor(left / 60), ss = left % 60;
+    clock.textContent = mm + ":" + (ss < 10 ? "0" : "") + ss;
+    var q = Math.floor(m / 15);
+    for (var i = 0; i < bars.length; i++) {
+      var fill = bars[i].firstChild;
+      bars[i].className = i < q ? "done" : "";
+      fill.style.width = i === q ? (into / 900 * 100) + "%" : "";
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
 </body>
 </html>
